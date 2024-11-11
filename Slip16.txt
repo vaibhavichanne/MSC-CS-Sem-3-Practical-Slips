@@ -1,0 +1,156 @@
+Q.1 Write a Java Program to implement Observer Design Pattern for number conversion.
+Accept a number in Decimal form and represent it in Hexadecimal, Octal and Binary.
+Change the Number and it reflects in other forms also [15 M]
+
+ANS:
+Number.java (Subject)
+java
+Copy code
+package practi5;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Number {
+    private List<Observer> observers = new ArrayList<>();
+    private int decimal;
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void setDecimal(int decimal) {
+        this.decimal = decimal;
+        notifyObservers();
+    }
+
+    public int getDecimal() {
+        return decimal;
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+}
+Observer.java
+java
+Copy code
+package practi5;
+
+public interface Observer {
+    void update();
+}
+HexadecimalObserver.java (Observer)
+java
+Copy code
+package practi5;
+
+public class HexadecimalObserver implements Observer {
+    private Number number;
+
+    public HexadecimalObserver(Number number) {
+        this.number = number;
+        this.number.addObserver(this);
+    }
+
+    @Override
+    public void update() {
+        System.out.println("Hexadecimal: " + Integer.toHexString(number.getDecimal()));
+    }
+}
+OctalObserver.java (Observer)
+java
+Copy code
+package practi5;
+
+public class OctalObserver implements Observer {
+    private Number number;
+
+    public OctalObserver(Number number) {
+        this.number = number;
+        this.number.addObserver(this);
+    }
+
+    @Override
+    public void update() {
+        System.out.println("Octal: " + Integer.toOctalString(number.getDecimal()));
+    }
+}
+BinaryObserver.java (Observer)
+java
+Copy code
+package practi5;
+
+public class BinaryObserver implements Observer {
+    private Number number;
+
+    public BinaryObserver(Number number) {
+        this.number = number;
+        this.number.addObserver(this);
+    }
+
+    @Override
+    public void update() {
+        System.out.println("Binary: " + Integer.toBinaryString(number.getDecimal()));
+    }
+}
+TestObserverPattern.java
+java
+Copy code
+package practi5;
+
+import java.util.Scanner;
+
+public class TestObserverPattern {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create a number object (subject)
+        Number number = new Number();
+
+        // Create observers
+        new HexadecimalObserver(number);
+        new OctalObserver(number);
+        new BinaryObserver(number);
+
+        // Accept number input and update
+        System.out.println("Enter a decimal number:");
+        int decimal = scanner.nextInt();
+
+        // Set the decimal number, which will notify the observers
+        number.setDecimal(decimal);
+
+        // Change the number and observe the updates
+        System.out.println("\nEnter another decimal number to change:");
+        decimal = scanner.nextInt();
+        number.setDecimal(decimal);
+
+        scanner.close();
+    }
+}
+
+Q.2 Write a program to connect with the available Wi-Fi using Arduino.
+
+ANS:
+#include <SPI.h>
+#include <WiFi.h>
+void setup() {
+char ssid[] = ”Wifi name”;
+char pass[] = ”secret password”;
+Serial.begin(9600); while
+(!Serial);
+int status = WL_IDLE_STATUS;
+while (status != WL_CONNECTED) {
+Serial.print("Connecting to "); Serial.println(ssid);
+status = WiFi.begin(ssid, pass); delay(5000);
+}
+Serial.print("IP address: ");
+Serial.println(WiFi.localIP());
+}
+void loop() { }

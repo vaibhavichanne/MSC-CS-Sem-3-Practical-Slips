@@ -1,0 +1,169 @@
+Q.1 Write a Java Program to implement Strategy Pattern for Duck Behavior. Create
+instance variable that holds current state of Duck from there, we just need to handle
+all Flying Behaviors and Quack Behavior [15 M]
+
+ANS:
+DuckBehaviorStrategy.java
+
+// Strategy interface for flying behavior
+interface FlyBehavior {
+    void fly();
+}
+
+// Concrete strategy for flying with wings
+class FlyWithWings implements FlyBehavior {
+    public void fly() {
+        System.out.println("Flying with wings!");
+    }
+}
+
+// Concrete strategy for no flying ability
+class FlyNoWay implements FlyBehavior {
+    public void fly() {
+        System.out.println("I can't fly.");
+    }
+}
+
+// Strategy interface for quacking behavior
+interface QuackBehavior {
+    void quack();
+}
+
+// Concrete strategy for normal quacking
+class Quack implements QuackBehavior {
+    public void quack() {
+        System.out.println("Quack!");
+    }
+}
+
+// Concrete strategy for silent behavior
+class MuteQuack implements QuackBehavior {
+    public void quack() {
+        System.out.println("<< Silence >>");
+    }
+}
+
+// Abstract Duck class with strategy behaviors
+abstract class Duck {
+    FlyBehavior flyBehavior;
+    QuackBehavior quackBehavior;
+
+    public void performFly() {
+        flyBehavior.fly();
+    }
+
+    public void performQuack() {
+        quackBehavior.quack();
+    }
+
+    public void setFlyBehavior(FlyBehavior fb) {
+        flyBehavior = fb;
+    }
+
+    public void setQuackBehavior(QuackBehavior qb) {
+        quackBehavior = qb;
+    }
+
+    public abstract void display();
+}
+
+// MallardDuck implementing Duck behaviors
+class MallardDuck extends Duck {
+    public MallardDuck() {
+        flyBehavior = new FlyWithWings();
+        quackBehavior = new Quack();
+    }
+
+    public void display() {
+        System.out.println("I'm a Mallard Duck");
+    }
+}
+
+// RubberDuck implementing Duck behaviors
+class RubberDuck extends Duck {
+    public RubberDuck() {
+        flyBehavior = new FlyNoWay();
+        quackBehavior = new MuteQuack();
+    }
+
+    public void display() {
+        System.out.println("I'm a Rubber Duck");
+    }
+}
+
+// Main class to test the strategy pattern
+public class DuckBehaviorStrategy {
+    public static void main(String[] args) {
+        Duck mallard = new MallardDuck();
+        mallard.display();
+        mallard.performFly();
+        mallard.performQuack();
+
+        System.out.println("\nChanging Mallard Duck behavior:");
+        mallard.setFlyBehavior(new FlyNoWay());
+        mallard.setQuackBehavior(new MuteQuack());
+        mallard.performFly();
+        mallard.performQuack();
+
+        System.out.println("\nTesting Rubber Duck:");
+        Duck rubberDuck = new RubberDuck();
+        rubberDuck.display();
+        rubberDuck.performFly();
+        rubberDuck.performQuack();
+    }
+}
+
+Q.2 Write python programs on Pi like:
+
+a) Print a name 'n' times, where name and n are read from standard input, using for and
+while loops.
+Solution:
+a = input("Enter your name: ")
+n = int(input("Enter the number you want to print that times: "))
+i = 1
+while i <= n:
+print(a)
+i+=1
+#Using for loop
+a = input("Enter your name: ")
+n = int(input("Enter the number you want to print that times: "))
+for i in range(n)
+print(a)
+
+b) Handle Divided by Zero Exception.
+def divide_numbers(x, y):
+ try:
+ result = x / y
+ print("Result:", result)
+ except ZeroDivisionError:
+ print("The division by zero operation is not allowed.")
+# Define the numerator and denominator values.
+numerator = 100
+denominator = 0
+divide_numbers(numerator, denominator) 
+
+c) Print current time for 10 times with an interval of10seconds.
+import time
+from datetime import datetime
+#For 10 times
+for x in range(10):
+ # Get current time
+ now = datetime.now()
+ # Make a string of it
+ current_time = now.strftime("%H:%M:%S")
+ # Print it
+ print(current_time)
+ # Wait for 10 seconds
+ time.sleep(10) 
+
+d) Read a fileline byline and print the word count of each line
+def count_lines_and_words(filename):
+ with open(filename, 'r') as file:
+ lines = file.readlines()
+ line_count = len(lines)
+ word_count = sum(len(line.split()) for line in lines)
+ return line_count, word_count
+# Usage
+filename = 'hello.txt' # Replace with your file path
+lines, words = count_lines_and_words(filename)
+print(f'Lines: {lines}, Words: {words}')

@@ -1,0 +1,241 @@
+Q.1 Write a Java Program to implement Command Design Pattern for Command Interface
+with execute() . Use this to create variety of commands for LightOnCommand,
+LightOffCommand, GarageDoorUpCommand, StereoOnWithCDComman. [15 M]
+
+ANS:
+Command.java
+java
+Copy code
+package practi5;
+
+public interface Command {
+    void execute();
+}
+Light.java
+java
+Copy code
+package practi5;
+
+public class Light {
+    public void on() {
+        System.out.println("The light is ON");
+    }
+
+    public void off() {
+        System.out.println("The light is OFF");
+    }
+}
+GarageDoor.java
+java
+Copy code
+package practi5;
+
+public class GarageDoor {
+    public void up() {
+        System.out.println("The garage door is UP");
+    }
+
+    public void down() {
+        System.out.println("The garage door is DOWN");
+    }
+}
+Stereo.java
+java
+Copy code
+package practi5;
+
+public class Stereo {
+    public void on() {
+        System.out.println("The stereo is ON");
+    }
+
+    public void off() {
+        System.out.println("The stereo is OFF");
+    }
+
+    public void setCD() {
+        System.out.println("CD is set in the stereo");
+    }
+
+    public void setVolume(int volume) {
+        System.out.println("The stereo volume is set to " + volume);
+    }
+}
+LightOnCommand.java
+java
+Copy code
+package practi5;
+
+public class LightOnCommand implements Command {
+    private Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.on();
+    }
+}
+LightOffCommand.java
+java
+Copy code
+package practi5;
+
+public class LightOffCommand implements Command {
+    private Light light;
+
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.off();
+    }
+}
+GarageDoorUpCommand.java
+java
+Copy code
+package practi5;
+
+public class GarageDoorUpCommand implements Command {
+    private GarageDoor garageDoor;
+
+    public GarageDoorUpCommand(GarageDoor garageDoor) {
+        this.garageDoor = garageDoor;
+    }
+
+    @Override
+    public void execute() {
+        garageDoor.up();
+    }
+}
+StereoOnWithCDCommand.java
+java
+Copy code
+package practi5;
+
+public class StereoOnWithCDCommand implements Command {
+    private Stereo stereo;
+
+    public StereoOnWithCDCommand(Stereo stereo) {
+        this.stereo = stereo;
+    }
+
+    @Override
+    public void execute() {
+        stereo.on();
+        stereo.setCD();
+        stereo.setVolume(11);
+    }
+}
+RemoteControl.java
+java
+Copy code
+package practi5;
+
+public class RemoteControl {
+    private Command[] onCommands;
+    private Command[] offCommands;
+
+    public RemoteControl() {
+        onCommands = new Command[7];
+        offCommands = new Command[7];
+
+        Command noCommand = new NoCommand();
+        for (int i = 0; i < 7; i++) {
+            onCommands[i] = noCommand;
+            offCommands[i] = noCommand;
+        }
+    }
+
+    public void setCommand(int slot, Command onCommand, Command offCommand) {
+        onCommands[slot] = onCommand;
+        offCommands[slot] = offCommand;
+    }
+
+    public void pressOnButton(int slot) {
+        onCommands[slot].execute();
+    }
+
+    public void pressOffButton(int slot) {
+        offCommands[slot].execute();
+    }
+
+    public String toString() {
+        StringBuilder stringBuff = new StringBuilder();
+        stringBuff.append("\n------ Remote Control ------\n");
+        for (int i = 0; i < 7; i++) {
+            stringBuff.append("[slot " + i + "] " + onCommands[i].getClass().getName() + "    " + offCommands[i].getClass().getName() + "\n");
+        }
+        return stringBuff.toString();
+    }
+}
+NoCommand.java
+java
+Copy code
+package practi5;
+
+public class NoCommand implements Command {
+    @Override
+    public void execute() {
+        System.out.println("No command assigned.");
+    }
+}
+TestCommandPattern.java
+java
+Copy code
+package practi5;
+
+public class TestCommandPattern {
+    public static void main(String[] args) {
+        RemoteControl remote = new RemoteControl();
+
+        Light livingRoomLight = new Light();
+        GarageDoor garageDoor = new GarageDoor();
+        Stereo stereo = new Stereo();
+
+        LightOnCommand livingRoomLightOn = new LightOnCommand(livingRoomLight);
+        LightOffCommand livingRoomLightOff = new LightOffCommand(livingRoomLight);
+        GarageDoorUpCommand garageDoorUp = new GarageDoorUpCommand(garageDoor);
+        StereoOnWithCDCommand stereoOnWithCD = new StereoOnWithCDCommand(stereo);
+
+        remote.setCommand(0, livingRoomLightOn, livingRoomLightOff);
+        remote.setCommand(1, garageDoorUp, null);
+        remote.setCommand(2, stereoOnWithCD, null);
+
+        System.out.println(remote);
+
+        System.out.println("\nPressing the ON button for slot 0 (Light):");
+        remote.pressOnButton(0);
+
+        System.out.println("\nPressing the OFF button for slot 0 (Light):");
+        remote.pressOffButton(0);
+
+        System.out.println("\nPressing the ON button for slot 1 (Garage Door):");
+        remote.pressOnButton(1);
+
+        System.out.println("\nPressing the ON button for slot 2 (Stereo with CD):");
+        remote.pressOnButton(2);
+    }
+}
+
+
+Q.2 Write a program to detects the vibration of an object with sensor using Arduino
+
+ANS:
+int vib_pin=7; int
+led_pin=13; void
+setup() {
+pinMode(vib_pin,INPUT); pinMode(led_pin,OUTPUT);
+}
+void loop() { int val;
+val=digitalRead(vib_pin); if(val==1)
+{
+digitalWrite(led_pin,HIGH); delay(1000);
+digitalWrite(led_pin,LOW); delay(1000);
+}
+else digitalWrite(led_pin,LOW);
+} 

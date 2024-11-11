@@ -1,0 +1,115 @@
+Q.1 Write a Java Program to implement an Adapter design pattern in mobile charger.
+Define two classes – Volt (to measure volts) and Socket (producing constant volts of
+120V). Build an adapter that can produce 3 volts, 12 volts and default 120 volts.
+Implements Adapter pattern using Class Adapter [15 M]
+ANS:
+
+Volt.java
+java
+Copy code
+package practi5;
+
+public class Volt {
+    private int volts;
+
+    public Volt(int volts) {
+        this.volts = volts;
+    }
+
+    public int getVolts() {
+        return volts;
+    }
+
+    public void setVolts(int volts) {
+        this.volts = volts;
+    }
+}
+Socket.java
+java
+Copy code
+package practi5;
+
+public class Socket {
+    public Volt getVolt() {
+        return new Volt(120); // Default voltage is 120V
+    }
+}
+Adapter.java
+java
+Copy code
+package practi5;
+
+public class Adapter extends Socket {
+
+    public Volt get3Volt() {
+        Volt v = getVolt();
+        return convertVolt(v, 40); // Convert to 3V
+    }
+
+    public Volt get12Volt() {
+        Volt v = getVolt();
+        return convertVolt(v, 10); // Convert to 12V
+    }
+
+    public Volt get120Volt() {
+        return getVolt(); // Default 120V
+    }
+
+    private Volt convertVolt(Volt v, int i) {
+        return new Volt(v.getVolts() / i);
+    }
+}
+TestAdapterPattern.java
+java
+Copy code
+package practi5;
+
+public class TestAdapterPattern {
+    public static void main(String[] args) {
+        Adapter adapter = new Adapter();
+
+        Volt v3 = adapter.get3Volt();
+        System.out.println("Volt Converted to 3V: " + v3.getVolts() + "V");
+
+        Volt v12 = adapter.get12Volt();
+        System.out.println("Volt Converted to 12V: " + v12.getVolts() + "V");
+
+        Volt v120 = adapter.get120Volt();
+        System.out.println("Volt from Socket: " + v120.getVolts() + "V");
+    }
+}
+
+
+Q.2 Write a program to measure the distance using ultrasonic sensor and make LED blink
+using Arduino.
+ANS:
+// constants
+const int TRIG_PIN = 6; // Arduino pin connected to Ultrasonic Sensor's TRIG pin
+const int ECHO_PIN = 7; // Arduino pin connected to Ultrasonic Sensor's ECHO pin
+const int LED_PIN = 3; // Arduino pin connected to LED's pin const int
+DISTANCE_THRESHOLD = 50; // centimeters
+// variables
+float duration_us, distance_cm;
+void setup() {
+Serial.begin(9600); // initialize serial port
+pinMode(TRIG_PIN, OUTPUT); // set arduino pin to output mode
+pinMode(ECHO_PIN, INPUT); // set arduino pin to input mode
+pinMode(LED_PIN, OUTPUT); // set arduino pin to output mode
+}
+void loop() {
+// generate 10-microsecond pulse to TRIG pin
+digitalWrite(TRIG_PIN, HIGH);
+delayMicroseconds(10);
+digitalWrite(TRIG_PIN, LOW);
+// measure duration of pulse from ECHO pin duration_us =
+pulseIn(ECHO_PIN, HIGH);
+// calculate the distance
+distance_cm = 0.017 * duration_us;
+if (distance_cm < DISTANCE_THRESHOLD) digitalWrite(LED_PIN,
+HIGH); // turn on LED
+else
+digitalWrite(LED_PIN, LOW); // turn off LED
+Serial.print("distance: ");
+// print the value to Serial Monitor Serial Monitor
+Serial.print(distance_cm); Serial.println(" cm");
+delay(500); 

@@ -1,0 +1,337 @@
+ Write a Java Program to implement State Pattern for Gumball Machine.
+Create instance variable that holds current state from there, we just need to handle all
+actions, behaviors and state transition that can happen [15 M]
+
+ANS:
+State.java
+
+package practi5;
+
+public interface State {
+    void insertCoin();
+    void ejectCoin();
+    void turnCrank();
+    void dispense();
+}
+NoCoinState.java
+
+package practi5;
+
+class NoCoinState implements State {
+    private GumballMachine gumballMachine;
+
+    public NoCoinState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("Coin inserted.");
+        gumballMachine.setState(gumballMachine.getHasCoinState());
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("No coin to eject.");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned, but there's no coin.");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("You need to insert a coin first.");
+    }
+}
+HasCoinState.java
+
+package practi5;
+
+class HasCoinState implements State {
+    private GumballMachine gumballMachine;
+
+    public HasCoinState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("You can't insert another coin.");
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("Coin returned.");
+        gumballMachine.setState(gumballMachine.getNoCoinState());
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned the crank...");
+        gumballMachine.setState(gumballMachine.getSoldState());
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("No gumball dispensed.");
+    }
+}
+SoldState.java
+
+package practi5;
+
+class SoldState implements State {
+    private GumballMachine gumballMachine;
+
+    public SoldState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("Please wait, we're already giving you a gumball.");
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("Sorry, you already turned the crank.");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("Turning twice doesn't get you another gumball!");
+    }
+
+    @Override
+    public void dispense() {
+        gumballMachine.releaseGumball();
+        if (gumballMachine.getCount() > 0) {
+            gumballMachine.setState(gumballMachine.getNoCoinState());
+        } else {
+            System.out.println("Oops, out of gumballs!");
+            gumballMachine.setState(gumballMachine.getSoldOutState());
+        }
+    }
+}
+SoldOutState.java
+
+package practi5;
+
+class SoldOutState implements State {
+    private GumballMachine gumballMachine;
+
+    public SoldOutState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertCoin() {
+        System.out.println("No gumballs available.");
+    }
+
+    @Override
+    public void ejectCoin() {
+        System.out.println("No coin to eject.");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned, but there's no gumballs.");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("No gumball dispensed.");
+    }
+}
+GumballMachine.java
+
+package practi5;
+
+class GumballMachine {
+    private State noCoinState;
+    private State hasCoinState;
+    private State soldState;
+    private State soldOutState;
+
+    private State state;
+    private int count = 0;
+
+    public GumballMachine(int numberOfGumballs) {
+        noCoinState = new NoCoinState(this);
+        hasCoinState = new HasCoinState(this);
+        soldState = new SoldState(this);
+        soldOutState = new SoldOutState(this);
+
+        this.count = numberOfGumballs;
+        state = (count > 0) ? noCoinState : soldOutState;
+    }
+
+    public void insertCoin() {
+        state.insertCoin();
+    }
+
+    public void ejectCoin() {
+        state.ejectCoin();
+    }
+
+    public void turnCrank() {
+        state.turnCrank();
+        state.dispense();
+    }
+
+    public void releaseGumball() {
+        if (count > 0) {
+            System.out.println("A gumball comes rolling out...");
+            count--;
+        }
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getNoCoinState() {
+        return noCoinState;
+    }
+
+    public State getHasCoinState() {
+        return hasCoinState;
+    }
+
+    public State getSoldState() {
+        return soldState;
+    }
+
+    public State getSoldOutState() {
+        return soldOutState;
+    }
+}
+TestGumballMachine.java
+
+package practi5;
+
+public class TestGumballMachine {
+    public static void main(String[] args) {
+        GumballMachine gumballMachine = new GumballMachine(3);
+
+        gumballMachine.insertCoin();
+        gumballMachine.turnCrank();
+
+        gumballMachine.insertCoin();
+        gumballMachine.ejectCoin();
+        gumballMachine.turnCrank();
+
+        gumballMachine.insertCoin();
+        gumballMachine.turnCrank();
+        gumballMachine.insertCoin();
+        gumballMachine.turnCrank();
+    }
+
+
+
+
+Q.2 Start Raspberry Pi and execute various Linux commands in command terminal window:
+ls, cd, touch, mv, rm, man, mkdir, rmdir, tar, gzip, cat, more, less, ps, sudo, cron, chown,
+chgrp, pingetc.
+
+ANS:
+1. ls: It lists directory contents of files and directories. - Display All Information About Files/Directories Using $ ls -l - Open Last Edited File Using ls -t - Display File Size in Human Readable Format Using ls –lh
+2. cd: cd command in linux known as change directory command. It is used to
+change current working directory.
+Syntax:
+$ cd [directory]
+- cd /: this command is used to change directory to the root directory
+- cd dir_1/dir_2/dir_3: This command is used to move inside a directory from a
+directory
+- cd .. : this command is used to move to the parent directory of current directory,
+or the directory one level up from the current directory.
+- cd “dir name”: This command is used to navigate to a directory with white
+spaces.
+3. touch: Used to create, change and modify timestamps of a file. It is used to
+create a file without any content.
+Touch command Syntax to create a new file:
+touch file_name
+Touch command to create multiple files:
+touch File1_name File2_name File3_name
+4. mv: mv stands for move. mv is used to move one or more files or directories from
+one place to another in file system.
+It has two distinct functions: - It rename a file or folder. - It moves group of files to different directory.
+Syntax:
+mv [Option] source destination
+5. rm: rm stands for remove here. rm command is used to remove objects
+such as files, directories, symbolic links and so on from the file system
+Syntax:
+rm [OPTION]... FILE...
+6. man: man command in Linux is used to display the user manual of any command
+Syntax:
+$man [OPTION]... [COMMAND NAME]...
+7. mkdir: mkdir command in Linux allows the user to create directories
+Syntax:
+$man [OPTION]... [COMMAND NAME]...
+8. rmdir: rmdir command in Linux allows the user to create directories
+Syntax:
+rmdir [-p] [-v | –verbose] [–ignore-fail-on-non-empty] directories …
+9. tar: The Linux ‘tar’ stands for tape archive, is used to create Archive and extract the
+Archive files.
+Syntax:
+tar [options] [archive-file] [file or directory to be archived]
+10. gzip: gzip command compresses files.
+Syntax :
+gzip [Options] [filenames]
+Example:
+$ gzip mydoc.txt
+11. cat: It reads data from the file and gives their content as output. It helps us
+to create, view, concatenate files.
+Command:
+$cat filename
+12. more: more command is used to view the text files in the command prompt,
+displaying one screen at a time in case the file is large (For example log files). The
+more command also allows the user do scroll up and down through the page.
+Syntax:
+more [-options] [-num] [+/pattern] [+linenum] [file_name]
+∙ [-options]: any option that you want to use in order to change the way the file is
+displayed. Choose any one from the followings: (-d, -l, -f, -p, -c, - s, -u)
+∙ [-num]: type the number of lines that you want to display per screen. ∙
+[+/pattern]: replace the pattern with any string that you want to find in the text
+file.
+∙ [+linenum]: use the line number from where you want to start displaying the text
+content.
+∙ [file_name]: name of the file containing the text that you want to display on the
+screen.
+13. Less: less command is linux utility which can be used to read contents of text file
+one page (one screen) per time. It has faster access because if file is large, it don’t
+access complete file, but access it page by page.
+Syntax :
+less filename
+14. ps: ps for viewing information related with the processes on a system
+which stands as abbreviation for “Process Status”
+Syntax :
+ ps [options]
+15. sudo: sudo (Super User DO) command in Linux is generally used as a prefix
+of some command that only superuser are allowed to run.
+16. cron: automates the scheduled task at a predetermined time. It is a daemon
+process, which runs as a background process.
+Syntax:
+cron [-f] [-l] [-L loglevel]
+17. chown: chown command is used to change the file Owner or group. Whenever
+you want to change ownership you can use chown command.
+Syntax:
+chown [OPTION]… [OWNER][: [GROUP]] FILE…
+chown [OPTION]… –reference=RFILE FILE…
+18. chgrp: chgrp command in Linux is used to change the group ownership of
+a file or directory.
+Syntax:
+Chgrp [OPTION]… GROUP FILE…
+chgrp [OPTION]… –reference=RFILE FILE
+19. ping: PING (Packet Internet Groper) command is used to check the network
+connectivity between host and server/host.
+Syntax:
+ping [destination]
+ping 192.168.1.1 

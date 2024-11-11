@@ -1,0 +1,272 @@
+Write a Java Program to implement undo command to test Ceiling fan. [15 M]
+ANS:
+1. Command Interface (CeilingFanCommand.java)
+
+package practi5;
+
+public interface CeilingFanCommand {
+    void execute();
+    void undo();
+}
+2. CeilingFan Class (Receiver)
+
+package practi5;
+
+class CeilingFan {
+    public static final int OFF = 0;
+    public static final int LOW = 1;
+    public static final int MEDIUM = 2;
+    public static final int HIGH = 3;
+
+    private int speed;
+
+    public CeilingFan() {
+        speed = OFF;
+    }
+
+    public void setHigh() {
+        speed = HIGH;
+        System.out.println("Ceiling Fan is set to HIGH");
+    }
+
+    public void setMedium() {
+        speed = MEDIUM;
+        System.out.println("Ceiling Fan is set to MEDIUM");
+    }
+
+    public void setLow() {
+        speed = LOW;
+        System.out.println("Ceiling Fan is set to LOW");
+    }
+
+    public void turnOff() {
+        speed = OFF;
+        System.out.println("Ceiling Fan is turned OFF");
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+}
+3. Commands for Fan Speeds (Low, Medium, High, Off)
+
+CeilingFanHighCommand.java
+
+package practi5;
+
+class CeilingFanHighCommand implements CeilingFanCommand {
+    private CeilingFan ceilingFan;
+    private int previousSpeed;
+
+    public CeilingFanHighCommand(CeilingFan ceilingFan) {
+        this.ceilingFan = ceilingFan;
+    }
+
+    @Override
+    public void execute() {
+        previousSpeed = ceilingFan.getSpeed();
+        ceilingFan.setHigh();
+    }
+
+    @Override
+    public void undo() {
+        restorePreviousSpeed();
+    }
+
+    private void restorePreviousSpeed() {
+        if (previousSpeed == CeilingFan.HIGH) {
+            ceilingFan.setHigh();
+        } else if (previousSpeed == CeilingFan.MEDIUM) {
+            ceilingFan.setMedium();
+        } else if (previousSpeed == CeilingFan.LOW) {
+            ceilingFan.setLow();
+        } else {
+            ceilingFan.turnOff();
+        }
+    }
+}
+CeilingFanMediumCommand.java
+
+package practi5;
+
+class CeilingFanMediumCommand implements CeilingFanCommand {
+    private CeilingFan ceilingFan;
+    private int previousSpeed;
+
+    public CeilingFanMediumCommand(CeilingFan ceilingFan) {
+        this.ceilingFan = ceilingFan;
+    }
+
+    @Override
+    public void execute() {
+        previousSpeed = ceilingFan.getSpeed();
+        ceilingFan.setMedium();
+    }
+
+    @Override
+    public void undo() {
+        restorePreviousSpeed();
+    }
+
+    private void restorePreviousSpeed() {
+        if (previousSpeed == CeilingFan.HIGH) {
+            ceilingFan.setHigh();
+        } else if (previousSpeed == CeilingFan.MEDIUM) {
+            ceilingFan.setMedium();
+        } else if (previousSpeed == CeilingFan.LOW) {
+            ceilingFan.setLow();
+        } else {
+            ceilingFan.turnOff();
+        }
+    }
+}
+CeilingFanLowCommand.java
+
+package practi5;
+
+class CeilingFanLowCommand implements CeilingFanCommand {
+    private CeilingFan ceilingFan;
+    private int previousSpeed;
+
+    public CeilingFanLowCommand(CeilingFan ceilingFan) {
+        this.ceilingFan = ceilingFan;
+    }
+
+    @Override
+    public void execute() {
+        previousSpeed = ceilingFan.getSpeed();
+        ceilingFan.setLow();
+    }
+
+    @Override
+    public void undo() {
+        restorePreviousSpeed();
+    }
+
+    private void restorePreviousSpeed() {
+        if (previousSpeed == CeilingFan.HIGH) {
+            ceilingFan.setHigh();
+        } else if (previousSpeed == CeilingFan.MEDIUM) {
+            ceilingFan.setMedium();
+        } else if (previousSpeed == CeilingFan.LOW) {
+            ceilingFan.setLow();
+        } else {
+            ceilingFan.turnOff();
+        }
+    }
+}
+CeilingFanOffCommand.java
+
+package practi5;
+
+class CeilingFanOffCommand implements CeilingFanCommand {
+    private CeilingFan ceilingFan;
+    private int previousSpeed;
+
+    public CeilingFanOffCommand(CeilingFan ceilingFan) {
+        this.ceilingFan = ceilingFan;
+    }
+
+    @Override
+    public void execute() {
+        previousSpeed = ceilingFan.getSpeed();
+        ceilingFan.turnOff();
+    }
+
+    @Override
+    public void undo() {
+        restorePreviousSpeed();
+    }
+
+    private void restorePreviousSpeed() {
+        if (previousSpeed == CeilingFan.HIGH) {
+            ceilingFan.setHigh();
+        } else if (previousSpeed == CeilingFan.MEDIUM) {
+            ceilingFan.setMedium();
+        } else if (previousSpeed == CeilingFan.LOW) {
+            ceilingFan.setLow();
+        } else {
+            ceilingFan.turnOff();
+        }
+    }
+}
+4. RemoteControl Class (Invoker)
+
+package practi5;
+
+class RemoteControl {
+    private CeilingFanCommand command;
+    private CeilingFanCommand lastCommand;
+
+    public void setCommand(CeilingFanCommand command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+        lastCommand = command;
+    }
+
+    public void pressUndo() {
+        if (lastCommand != null) {
+            lastCommand.undo();
+        }
+    }
+}
+5. Test Program (Main Class)
+
+package practi5;
+
+public class TestCeilingFanControl {
+    public static void main(String[] args) {
+        CeilingFan ceilingFan = new CeilingFan();
+
+        CeilingFanCommand fanHigh = new CeilingFanHighCommand(ceilingFan);
+        CeilingFanCommand fanMedium = new CeilingFanMediumCommand(ceilingFan);
+        CeilingFanCommand fanLow = new CeilingFanLowCommand(ceilingFan);
+        CeilingFanCommand fanOff = new CeilingFanOffCommand(ceilingFan);
+
+        RemoteControl remote = new RemoteControl();
+
+        // Test setting fan speed to HIGH
+        remote.setCommand(fanHigh);
+        remote.pressButton();
+
+        // Test setting fan speed to MEDIUM
+        remote.setCommand(fanMedium);
+        remote.pressButton();
+
+        // Test undoing the last command (should revert to HIGH)
+        remote.pressUndo();
+
+        // Test setting fan speed to LOW
+        remote.setCommand(fanLow);
+        remote.pressButton();
+
+        // Test undoing the last command (should revert to MEDIUM)
+        remote.pressUndo();
+
+        // Test turning the fan OFF
+        remote.setCommand(fanOff);
+        remote.pressButton();
+
+        // Test undoing the last command (should revert to LOW)
+        remote.pressUndo();
+    }
+}
+
+Q.2 Write a program for LDR to vary the light intensity of LED using
+Arduino
+ANS:
+int sensor=A0;
+int output=9;
+void setup()
+{
+pinMode(output, OUTPUT);
+}
+void loop()
+{
+int reading=analogRead(sensor); int
+bright=reading/4; delay(500);
+analogWrite(output, bright);
+}

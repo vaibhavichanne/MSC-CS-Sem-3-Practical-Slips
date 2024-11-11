@@ -1,0 +1,199 @@
+Write a Java Program to implement Factory method for Pizza Store with createPizza(),
+orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s
+like NyStyleCheesePizza, ChicagoStyleCheesePizza etc
+
+ANS:
+CheesePizza.java
+
+package FactoryPizza;
+public class CheesePizza extends Pizza
+{
+	public CheesePizza()
+	{
+		name="Cheese Pizza";
+		dough="Regular Crust";
+		sauce="Marinara Pizza Sauce";
+		toppings.add("Fresh Mozzarella");
+		toppings.add("Parmesan");
+	}
+}
+
+ClamPizza.java
+
+package FactoryPizza;
+public class ClamPizza extends Pizza
+{
+	public ClamPizza()
+	{
+		name="Clam Pizza";
+		dough="Thin Crust";
+		sauce="White Garlic Sauce";
+		toppings.add("Clams");
+		toppings.add("Grated Parmesan Cheese");
+	}
+}
+
+PepperoniPizza.java
+
+package FactoryPizza;
+public class PepperoniPizza extends Pizza
+{
+	public PepperoniPizza()
+	{
+		name="Pepperoni Pizza";
+		dough=" Crust";
+		sauce="Marinara Sauce";
+		toppings.add("Sliced Pepperoni");
+		toppings.add("Sliced Onion");
+		toppings.add("Grated Parmesan Cheese");
+	}
+}
+
+Pizza.java
+
+package FactoryPizza;
+import java.util.ArrayList;
+public class Pizza 
+{
+	String name;
+	String dough;
+	String sauce;
+	ArrayList toppings=new ArrayList();
+	public String getName()
+	{
+		return name;
+	}
+	public void prepare()
+	{
+		System.out.println("Preparing"+name);
+	}
+	public void bake()
+	{
+		System.out.println("Baking"+name);
+	}
+	public void cut()
+	{
+		System.out.println("Cutting"+name);
+	}
+	public void box()
+	{
+		System.out.println("Boxing"+name);
+	}
+	public String toString()
+	{
+		StringBuffer display=new StringBuffer();
+		display.append("----"+name+"----\n");
+		display.append(dough+"\n");
+		display.append(sauce+"\n");
+		for(int i=0;i<toppings.size();i++)
+		{
+			display.append((String)toppings.get(i)+"\n");
+		}
+		return display.toString();
+}
+}
+
+PizzaStore.java
+
+package FactoryPizza;
+public class PizzaStore 
+{
+	SimplePizzaFactory factory;
+	public PizzaStore(SimplePizzaFactory factory)
+	{
+		this.factory=factory;
+	}
+	public Pizza orderPizza(String type)
+	{
+		Pizza pizza;
+		pizza=factory.createPizza(type);
+		pizza.prepare();
+		pizza.bake();
+		pizza.cut();
+		pizza.box();
+		return pizza;
+	}
+}
+
+PizzaTestDrive.java
+
+package FactoryPizza;
+public class PizzaTestDrive 
+{
+	public static void main(String[] args)
+	{
+		SimplePizzaFactory factory=new SimplePizzaFactory();
+		PizzaStore store=new PizzaStore(factory);
+		
+		Pizza pizza=store.orderPizza("cheese");
+		System.out.println("We ordered a"+pizza.getName()+"\n");
+		
+	    pizza=store.orderPizza("veggie");
+		System.out.println("We ordered a "+pizza.getName()+"\n");
+	}
+}
+
+SimplePizzaFactory.java
+
+package FactoryPizza;
+public class SimplePizzaFactory 
+{
+	public Pizza createPizza(String type)
+	{
+		Pizza pizza=null;
+		if(type.equals("cheese"))
+		{
+			pizza=new CheesePizza();
+		}
+		else if(type.equals("pepperoni"))
+		{
+			pizza=new PepperoniPizza();
+		}
+		else if(type.equals("clam"))
+		{
+			pizza=new ClamPizza();
+		}
+		else if(type.equals("veggie"))
+		{
+			pizza=new VeggiePizza();
+		}
+		return pizza;
+	}
+}
+
+VeggiePizza.java
+
+package FactoryPizza;
+public class VeggiePizza extends Pizza
+{
+	public VeggiePizza()
+	{
+		name="Veggie Pizza";
+		dough=" Crust";
+		sauce="Marinara Sauce";
+		toppings.add("Shredded Mozzarella");
+		toppings.add("Sliced Red Pepper");
+		toppings.add("Sliced Black Olives");
+		toppings.add("Sliced Mushrooms");
+		toppings.add("Diced Onion");
+		toppings.add("Grated Parmesan");
+	}
+}
+
+Q2. Write a program to sense a finger when it is placed on the board Arduino
+
+ANS: #include <CapacitiveSensor.h>
+const int touchPin = 2;
+const int touchThreshold = 50;
+CapacitiveSensor touchSensor = CapacitiveSensor(0, touchPin);
+void setup() {
+Serial.begin(9600);
+}
+void loop() {
+long touchValue = touchSensor.capacitiveSensor(30);
+if (touchValue > touchThreshold)
+{
+Serial.println("Finger detected!");
+delay(1000); // wait for 1 second to prevent multiple detections
+}
+}

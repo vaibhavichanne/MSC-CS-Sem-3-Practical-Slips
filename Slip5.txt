@@ -1,0 +1,70 @@
+Write a Java Program to implement Adapter pattern for Enumeration iterator
+
+ANS:
+EnumerationIterator.java
+
+package EnumerationIterator;
+import java.util.*;
+public class EnumerationIterator implements Iterator
+{
+	Enumeration enumeration;
+	public EnumerationIterator(Enumeration enumeration)
+	{
+		this.enumeration=enumeration;
+	}
+	public boolean hasNext()
+	{
+		return enumeration.hasMoreElements();
+	}
+	public Object next()
+	{
+		return enumeration.nextElement();
+	}
+	public void remove()
+	{
+		throw new UnsupportedOperationException();
+	}
+}
+
+EnumerationIteratorTestDrive.java
+
+package EnumerationIterator;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.*;
+
+public class EnumerationIteratorTestDrive 
+{
+	public static void main(String args[])
+	{
+		Vector v=new Vector();
+		v.add("a");
+		v.add("b");
+		v.add("c");
+		Iterator iterator=new EnumerationIterator(v.elements());
+		while(iterator.hasNext())
+		{
+			System.out.println(iterator.next());
+		}
+	}
+}
+
+Q2. Write a program to connect with the available Wi-Fi using Arduino.
+
+ANS: 
+#include <SPI.h>
+#include <WiFi.h>
+void setup() {
+char ssid[] = ”Wifi name”;
+char pass[] = ”secret password”;
+Serial.begin(9600); while
+(!Serial);
+int status = WL_IDLE_STATUS;
+while (status != WL_CONNECTED) {
+Serial.print("Connecting to "); Serial.println(ssid);
+status = WiFi.begin(ssid, pass); delay(5000);
+}
+Serial.print("IP address: ");
+Serial.println(WiFi.localIP());
+}
+void loop() { }

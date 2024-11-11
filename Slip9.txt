@@ -1,0 +1,74 @@
+Q.1 Design simple HR Application using Spring Framework [15 M]
+ANS:
+
+Q.2 Write python programs on Pi :
+a) Read your name and print Hello message with name.
+Program:
+name = input('What is your name?\n')
+print ('Hello %s.' % name)
+
+b) Read two numbers and print their sum, difference, product and division.
+ Program:
+num1 = int(input("Enter First Number: "))
+num2 = int(input("Enter Second Number: "))
+print("Enter which operation would you like to perform?")
+ch = input("Enter any of these char for specific operation +,-,*,/: ")
+result = 0
+if ch == '+':
+result = num1 + num2
+elif ch == '-':
+result = num1 - num2
+elif ch == '*':
+result = num1 *num2
+elif ch == '/':
+result = num1 /num2
+ else:
+print("Input character is not recognized!")
+print(num1, ch , num2, ":", result)
+ 
+c) Word and character count of a given string.
+Program:
+word_count = 0
+char_count = 0
+usr_input = input("Enter a string : ")
+split_string = usr_input.split()
+word_count = len(split_string)
+for word in split_string:
+char_count += len(word)
+print("Total words : {}".format(word_count))
+print("Total characters : {}".format(char_count))
+ 
+
+d) Area of a given shape (rectangle, triangle and circle) reading shape and
+appropriate values from standard input.
+Program:
+width = float(input('Please Enter the Width of a Rectangle: '))
+height = float(input('Please Enter the Height of a Rectangle: '))
+# calculate the area
+Area = width * height
+# calculate the Perimeter
+Perimeter = 2 * (width + height)
+print("\n Area of a Rectangle is: %.2f" %Area) print("
+Perimeter of Rectangle is: %.2f" %Perimeter)
+ 
+e) Program:
+# Python Program to find the area of triangle
+# Three sides of the triangle a, b and c are provided by the user
+a = float(input('Enter first side: '))
+b = float(input('Enter second side: ')
+c = float(input('Enter third side: '))
+# calculate the semiperimeter s = (a + b + c) / 2
+# calculate the area
+area = (s*(s-a)*(s-b)*(s-c)) ** 0.5
+print('The area of the triangle is %0.2f' %area)
+
+
+f) Program:
+# Python Program to find Diameter, Circumference, and Area of a Circle
+PI = 3.14
+radius = float(input(' Please Enter the radius of a circle: '))
+diameter = 2 * radius
+circumference = 2 * PI * radius area = PI * radius * radius
+print(" \n Diameter of a Circle = %.2f" %diameter)
+print(" Circumference of a Circle = %.2f" %circumference)
+print(" Area of a Circle = %.2f" %area)

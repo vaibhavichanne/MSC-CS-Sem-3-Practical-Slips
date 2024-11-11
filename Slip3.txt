@@ -1,0 +1,111 @@
+Write a JAVA Program to implement built-in support (java.util.Observable) Weather
+station with members temperature, humidity, pressure and methods
+mesurmentsChanged(), setMesurment(), getTemperature(), getHumidity(),
+getPressure() 
+
+ANS: 
+WeatherDisplay.java
+
+package com.example;
+import java.util.Observable;
+import java.util.Observer;
+
+public class WeatherDisplay implements Observer {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherDisplay(Observable observable) {
+        observable.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable obs, Object arg) {
+        if (obs instanceof WeatherStation) {
+            WeatherStation weatherStation = (WeatherStation) obs;
+            this.temperature = weatherStation.getTemperature();
+            this.humidity = weatherStation.getHumidity();
+            this.pressure = weatherStation.getPressure();
+            display();
+        }
+    }
+
+    public void display() {
+        System.out.println("Current conditions: ");
+        System.out.println("Temperature: " + temperature + "C");
+        System.out.println("Humidity: " + humidity + "%");
+        System.out.println("Pressure: " + pressure + " hPa");
+    }
+}
+
+WeatherStation.java
+
+package com.example;
+import java.util.Observable;
+public class WeatherStation extends Observable {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherStation() {}
+
+    public void measurementsChanged() {
+        setChanged();
+        notifyObservers();
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+}
+
+WeatherStationApp.java
+
+package com.example;
+public class WeatherStationApp {
+    public static void main(String[] args) {
+        // Create a WeatherStation instance (Observable)
+        WeatherStation weatherStation = new WeatherStation();
+        
+        // Create a WeatherDisplay instance (Observer) and register it to the WeatherStation
+        WeatherDisplay weatherDisplay = new WeatherDisplay(weatherStation);
+
+        // Simulate setting new measurements
+        weatherStation.setMeasurements(25.5f, 65.0f, 1013.1f);
+        weatherStation.setMeasurements(27.0f, 70.0f, 1010.0f);
+        weatherStation.setMeasurements(23.4f, 60.0f, 1008.5f);
+    }
+}
+
+
+Write a program to detects the vibration of an object with sensor using Arduino
+
+ANS:
+int vib_pin=7; int
+led_pin=13; void
+setup() {
+pinMode(vib_pin,INPUT); pinMode(led_pin,OUTPUT);
+}
+void loop() { int val;
+val=digitalRead(vib_pin); if(val==1)
+{
+digitalWrite(led_pin,HIGH); delay(1000);
+digitalWrite(led_pin,LOW); delay(1000);
+}
+else digitalWrite(led_pin,LOW);
+} 

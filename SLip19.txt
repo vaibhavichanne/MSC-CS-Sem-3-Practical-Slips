@@ -1,0 +1,281 @@
+Q.1 Write a Java Program to implement Factory method for Pizza Store with createPizza(),
+orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s
+like NyStyleCheesePizza, ChicagoStyleCheesePizza etc. [15 M]
+
+ANS:
+CheesePizza.java
+
+package FactoryPizza;
+public class CheesePizza extends Pizza
+{
+	public CheesePizza()
+	{
+		name="Cheese Pizza";
+		dough="Regular Crust";
+		sauce="Marinara Pizza Sauce";
+		toppings.add("Fresh Mozzarella");
+		toppings.add("Parmesan");
+	}
+}
+
+ClamPizza.java
+
+package FactoryPizza;
+public class ClamPizza extends Pizza
+{
+	public ClamPizza()
+	{
+		name="Clam Pizza";
+		dough="Thin Crust";
+		sauce="White Garlic Sauce";
+		toppings.add("Clams");
+		toppings.add("Grated Parmesan Cheese");
+	}
+}
+
+PepperoniPizza.java
+
+package FactoryPizza;
+public class PepperoniPizza extends Pizza
+{
+	public PepperoniPizza()
+	{
+		name="Pepperoni Pizza";
+		dough=" Crust";
+		sauce="Marinara Sauce";
+		toppings.add("Sliced Pepperoni");
+		toppings.add("Sliced Onion");
+		toppings.add("Grated Parmesan Cheese");
+	}
+}
+
+Pizza.java
+
+package FactoryPizza;
+import java.util.ArrayList;
+public class Pizza 
+{
+	String name;
+	String dough;
+	String sauce;
+	ArrayList toppings=new ArrayList();
+	public String getName()
+	{
+		return name;
+	}
+	public void prepare()
+	{
+		System.out.println("Preparing"+name);
+	}
+	public void bake()
+	{
+		System.out.println("Baking"+name);
+	}
+	public void cut()
+	{
+		System.out.println("Cutting"+name);
+	}
+	public void box()
+	{
+		System.out.println("Boxing"+name);
+	}
+	public String toString()
+	{
+		StringBuffer display=new StringBuffer();
+		display.append("----"+name+"----\n");
+		display.append(dough+"\n");
+		display.append(sauce+"\n");
+		for(int i=0;i<toppings.size();i++)
+		{
+			display.append((String)toppings.get(i)+"\n");
+		}
+		return display.toString();
+}
+}
+
+PizzaStore.java
+
+package FactoryPizza;
+public class PizzaStore 
+{
+	SimplePizzaFactory factory;
+	public PizzaStore(SimplePizzaFactory factory)
+	{
+		this.factory=factory;
+	}
+	public Pizza orderPizza(String type)
+	{
+		Pizza pizza;
+		pizza=factory.createPizza(type);
+		pizza.prepare();
+		pizza.bake();
+		pizza.cut();
+		pizza.box();
+		return pizza;
+	}
+}
+
+PizzaTestDrive.java
+
+package FactoryPizza;
+public class PizzaTestDrive 
+{
+	public static void main(String[] args)
+	{
+		SimplePizzaFactory factory=new SimplePizzaFactory();
+		PizzaStore store=new PizzaStore(factory);
+		
+		Pizza pizza=store.orderPizza("cheese");
+		System.out.println("We ordered a"+pizza.getName()+"\n");
+		
+	    pizza=store.orderPizza("veggie");
+		System.out.println("We ordered a "+pizza.getName()+"\n");
+	}
+}
+
+SimplePizzaFactory.java
+
+package FactoryPizza;
+public class SimplePizzaFactory 
+{
+	public Pizza createPizza(String type)
+	{
+		Pizza pizza=null;
+		if(type.equals("cheese"))
+		{
+			pizza=new CheesePizza();
+		}
+		else if(type.equals("pepperoni"))
+		{
+			pizza=new PepperoniPizza();
+		}
+		else if(type.equals("clam"))
+		{
+			pizza=new ClamPizza();
+		}
+		else if(type.equals("veggie"))
+		{
+			pizza=new VeggiePizza();
+		}
+		return pizza;
+	}
+}
+
+VeggiePizza.java
+
+package FactoryPizza;
+public class VeggiePizza extends Pizza
+{
+	public VeggiePizza()
+	{
+		name="Veggie Pizza";
+		dough=" Crust";
+		sauce="Marinara Sauce";
+		toppings.add("Shredded Mozzarella");
+		toppings.add("Sliced Red Pepper");
+		toppings.add("Sliced Black Olives");
+		toppings.add("Sliced Mushrooms");
+		toppings.add("Diced Onion");
+		toppings.add("Grated Parmesan");
+	}
+}
+
+
+Q.2 Start Raspberry Pi and Execute various Linux commands in command
+terminal window: ls, cd, touch, mv, rm, man, mkdir, rmdir, tar, gzip, cat,
+more, less, ps, sudo, cron, chown, chgrp, pingetc.
+
+ANS:
+1. ls: It lists directory contents of files and directories. - Display All Information About Files/Directories Using $ ls -l - Open Last Edited File Using ls -t - Display File Size in Human Readable Format Using ls –lh
+2. cd: cd command in linux known as change directory command. It is used to
+change current working directory.
+Syntax:
+$ cd [directory]
+- cd /: this command is used to change directory to the root directory
+- cd dir_1/dir_2/dir_3: This command is used to move inside a directory from a
+directory
+- cd .. : this command is used to move to the parent directory of current directory,
+or the directory one level up from the current directory.
+- cd “dir name”: This command is used to navigate to a directory with white
+spaces.
+3. touch: Used to create, change and modify timestamps of a file. It is used to
+create a file without any content.
+Touch command Syntax to create a new file:
+touch file_name
+Touch command to create multiple files:
+touch File1_name File2_name File3_name
+4. mv: mv stands for move. mv is used to move one or more files or directories from
+one place to another in file system.
+It has two distinct functions: - It rename a file or folder. - It moves group of files to different directory.
+Syntax:
+mv [Option] source destination
+5. rm: rm stands for remove here. rm command is used to remove objects
+such as files, directories, symbolic links and so on from the file system
+Syntax:
+rm [OPTION]... FILE...
+6. man: man command in Linux is used to display the user manual of any command
+Syntax:
+$man [OPTION]... [COMMAND NAME]...
+7. mkdir: mkdir command in Linux allows the user to create directories
+Syntax:
+$man [OPTION]... [COMMAND NAME]...
+8. rmdir: rmdir command in Linux allows the user to create directories
+Syntax:
+rmdir [-p] [-v | –verbose] [–ignore-fail-on-non-empty] directories …
+9. tar: The Linux ‘tar’ stands for tape archive, is used to create Archive and extract the
+Archive files.
+Syntax:
+tar [options] [archive-file] [file or directory to be archived]
+10. gzip: gzip command compresses files.
+Syntax :
+gzip [Options] [filenames]
+Example:
+$ gzip mydoc.txt]
+11. cat: It reads data from the file and gives their content as output. It helps us
+to create, view, concatenate files.
+Command:
+$cat filename
+12. more: more command is used to view the text files in the command prompt,
+displaying one screen at a time in case the file is large (For example log files). The
+more command also allows the user do scroll up and down through the page.
+Syntax:
+more [-options] [-num] [+/pattern] [+linenum] [file_name]
+∙ [-options]: any option that you want to use in order to change the way the file is
+displayed. Choose any one from the followings: (-d, -l, -f, -p, -c, - s, -u)
+∙ [-num]: type the number of lines that you want to display per screen. ∙
+[+/pattern]: replace the pattern with any string that you want to find in the text
+file.
+∙ [+linenum]: use the line number from where you want to start displaying the text
+content.
+∙ [file_name]: name of the file containing the text that you want to display on the
+screen.
+13. Less: less command is linux utility which can be used to read contents of text file
+one page (one screen) per time. It has faster access because if file is large, it don’t
+access complete file, but access it page by page.
+Syntax :
+less filename
+14. ps: ps for viewing information related with the processes on a system
+which stands as abbreviation for “Process Status”
+Syntax :
+ ps [options]
+15. sudo: sudo (Super User DO) command in Linux is generally used as a prefix
+of some command that only superuser are allowed to run.
+16. cron: automates the scheduled task at a predetermined time. It is a daemon
+process, which runs as a background process.
+Syntax:
+cron [-f] [-l] [-L loglevel]
+17. chown: chown command is used to change the file Owner or group. Whenever
+you want to change ownership you can use chown command.
+Syntax:
+chown [OPTION]… [OWNER][: [GROUP]] FILE…
+chown [OPTION]… –reference=RFILE FILE…
+18. chgrp: chgrp command in Linux is used to change the group ownership of
+a file or directory.
+Syntax:
+Chgrp [OPTION]… GROUP FILE…
+chgrp [OPTION]… –reference=RFILE FILE
+19. ping: PING (Packet Internet Groper) command is used to check the network
+connectivity between host and server/host.
+Syntax:
+ping [destination]
+ping 192.168.1.1 

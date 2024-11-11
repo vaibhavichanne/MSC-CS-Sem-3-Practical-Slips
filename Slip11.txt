@@ -1,0 +1,136 @@
+Q.1 Write a java program to implement Adapter pattern to design Heart Model to Beat
+Model [15 M]
+
+ANS:
+BeatModelInterface.java
+
+package practi5;
+
+public interface BeatModelInterface {
+    void initialize();
+    void on();
+    void off();
+    void setBPM(int bpm);
+    int getBPM();
+}
+HeartModelInterface.java
+
+package practi5;
+
+public interface HeartModelInterface {
+    int getHeartRate();
+}
+HeartModel.java
+
+package practi5;
+
+public class HeartModel implements HeartModelInterface {
+    private int heartRate = 70;
+
+    @Override
+    public int getHeartRate() {
+        return heartRate;
+    }
+
+    public void setHeartRate(int rate) {
+        this.heartRate = rate;
+        System.out.println("Heart rate is set to: " + heartRate);
+    }
+}
+HeartToBeatAdapter.java
+
+package practi5;
+
+public class HeartToBeatAdapter implements BeatModelInterface {
+    private HeartModelInterface heartModel;
+
+    public HeartToBeatAdapter(HeartModelInterface heartModel) {
+        this.heartModel = heartModel;
+    }
+
+    @Override
+    public void initialize() {
+        System.out.println("Initializing heart as beat model.");
+    }
+
+    @Override
+    public void on() {
+        System.out.println("Heart model is on.");
+    }
+
+    @Override
+    public void off() {
+        System.out.println("Heart model is off.");
+    }
+
+    @Override
+    public void setBPM(int bpm) {
+        if (heartModel instanceof HeartModel) {
+            ((HeartModel) heartModel).setHeartRate(bpm);
+        }
+    }
+
+    @Override
+    public int getBPM() {
+        return heartModel.getHeartRate();
+    }
+}
+TestAdapterPattern.java
+
+package practi5;
+
+public class TestAdapterPattern {
+    public static void main(String[] args) {
+        HeartModel heart = new HeartModel();
+        BeatModelInterface beatAdapter = new HeartToBeatAdapter(heart);
+
+        beatAdapter.initialize();
+        beatAdapter.on();
+        beatAdapter.setBPM(85);
+        System.out.println("Current BPM (Heart Rate): " + beatAdapter.getBPM());
+        beatAdapter.off();
+    }
+}
+
+Q.2 Run some python programs on Pi like
+ a) Light an LED through Python program
+ import RPi.GPIO as GPIO
+# Import Raspberry Pi GPIO library
+from time import sleep
+# Import the sleep function from the time module
+GPIO.setwarnings(False)
+# Ignore warning for now
+GPIO.setmode(GPIO.BOARD)
+# Use physical pin numbering
+GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+# Set pin 8 to be an output pin and set initial value to low (off)
+while True: # Run forever
+GPIO.output(8, GPIO.HIGH) # Turn on
+sleep(1) # Sleep for 1 second
+GPIO.output(8, GPIO.LOW) # Turn off
+sleep(1) # Sleep for 1 second
+from machine import Pin
+from utime import sleep
+led = Pin(6, Pin.OUT)
+while True:
+ led.toggle()
+ sleep(1)s
+
+ b) Get input from two switches and switch on corresponding LEDs
+ import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(13,GPIO.IN) #button1
+#GPIO.setup(15,GPIO.IN) #button2
+GPIO.setup(21,GPIO.OUT) #led1
+GPIO.setup(22,GPIO.OUT) #led2
+if (GPIO.input(13)==1): print("on led1")
+ GPIO.output(21, GPIO.HIGH)
+elif (GPIO.input(15)==1):
+ print("on led2")
+GPIO.output(22, GPIO.HIGH)
+elif:
+ print (“ button is not pressed”) 
+ 
+ c) Flash an LED at a given on time and off time cycle, where the two times are taken
+from a file

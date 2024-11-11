@@ -1,0 +1,178 @@
+Q.1 Write a Java Program to implement Facade Design Pattern for Home Theater
+[15 M]
+
+ANS:
+Amplifier.java
+java
+Copy code
+package practi5;
+
+public class Amplifier {
+    public void on() {
+        System.out.println("Amplifier is ON");
+    }
+
+    public void off() {
+        System.out.println("Amplifier is OFF");
+    }
+
+    public void setVolume(int volume) {
+        System.out.println("Amplifier volume set to " + volume);
+    }
+
+    public void setSurroundSound() {
+        System.out.println("Amplifier surround sound ON");
+    }
+}
+Projector.java
+java
+Copy code
+package practi5;
+
+public class Projector {
+    public void on() {
+        System.out.println("Projector is ON");
+    }
+
+    public void off() {
+        System.out.println("Projector is OFF");
+    }
+
+    public void setWideScreenMode() {
+        System.out.println("Projector in Widescreen mode");
+    }
+}
+Screen.java
+java
+Copy code
+package practi5;
+
+public class Screen {
+    public void down() {
+        System.out.println("Screen is DOWN");
+    }
+
+    public void up() {
+        System.out.println("Screen is UP");
+    }
+}
+TheaterLights.java
+java
+Copy code
+package practi5;
+
+public class TheaterLights {
+    public void dim(int level) {
+        System.out.println("Lights dimmed to " + level + "%");
+    }
+
+    public void on() {
+        System.out.println("Lights ON");
+    }
+}
+DvdPlayer.java
+java
+Copy code
+package practi5;
+
+public class DvdPlayer {
+    public void on() {
+        System.out.println("DVD Player is ON");
+    }
+
+    public void off() {
+        System.out.println("DVD Player is OFF");
+    }
+
+    public void play(String movie) {
+        System.out.println("Playing movie: " + movie);
+    }
+
+    public void stop() {
+        System.out.println("DVD Player stopped");
+    }
+}
+HomeTheaterFacade.java
+java
+Copy code
+package practi5;
+
+public class HomeTheaterFacade {
+    private Amplifier amplifier;
+    private Projector projector;
+    private Screen screen;
+    private TheaterLights lights;
+    private DvdPlayer dvdPlayer;
+
+    public HomeTheaterFacade(Amplifier amplifier, Projector projector, Screen screen, TheaterLights lights, DvdPlayer dvdPlayer) {
+        this.amplifier = amplifier;
+        this.projector = projector;
+        this.screen = screen;
+        this.lights = lights;
+        this.dvdPlayer = dvdPlayer;
+    }
+
+    public void watchMovie(String movie) {
+        System.out.println("\nGet ready to watch a movie...");
+
+        lights.dim(10);
+        screen.down();
+        projector.on();
+        projector.setWideScreenMode();
+        amplifier.on();
+        amplifier.setVolume(5);
+        amplifier.setSurroundSound();
+        dvdPlayer.on();
+        dvdPlayer.play(movie);
+    }
+
+    public void endMovie() {
+        System.out.println("\nShutting down the home theater...");
+
+        lights.on();
+        screen.up();
+        projector.off();
+        amplifier.off();
+        dvdPlayer.stop();
+        dvdPlayer.off();
+    }
+}
+TestFacadePattern.java
+java
+Copy code
+package practi5;
+
+public class TestFacadePattern {
+    public static void main(String[] args) {
+        Amplifier amplifier = new Amplifier();
+        Projector projector = new Projector();
+        Screen screen = new Screen();
+        TheaterLights lights = new TheaterLights();
+        DvdPlayer dvdPlayer = new DvdPlayer();
+
+        HomeTheaterFacade homeTheater = new HomeTheaterFacade(amplifier, projector, screen, lights, dvdPlayer);
+
+        homeTheater.watchMovie("Inception");
+        homeTheater.endMovie();
+    }
+}
+
+
+Q.2 Write a program to sense a finger when it is placed on the board Arduino.
+
+ANS:
+#include <CapacitiveSensor.h>
+const int touchPin = 2;
+const int touchThreshold = 50;
+CapacitiveSensor touchSensor = CapacitiveSensor(0, touchPin);
+void setup() {
+Serial.begin(9600);
+}
+void loop() {
+long touchValue = touchSensor.capacitiveSensor(30);
+if (touchValue > touchThreshold)
+{
+Serial.println("Finger detected!");
+delay(1000); // wait for 1 second to prevent multiple detections
+}
+}
